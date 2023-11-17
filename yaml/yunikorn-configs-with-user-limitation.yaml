@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: yunikorn-configs
+  namespace: yunikorn
+data:
+  admissionController.accessControl.bypassAuth: "true"
+  log.level: "DEBUG"
+  queues.yaml: |
+    partitions:
+      - name: default
+        queues:
+          - name: root
+            parent: true
+            submitacl: "*"
+            queues:
+                - name: sandbox1
+                  limits:
+                      - limit: user entry
+                        users:
+                            - user1
+                        maxresources:
+                            memory: 100M
+                        maxapplications: 2
+                      - limit: group entry
+                        groups:
+                            - group1
+                        maxresources:
+                            memory: 50M
+                        maxapplications: 2
+                - name: sandbox2
